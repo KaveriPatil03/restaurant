@@ -18,6 +18,7 @@ import UserOrderDetails from './Components/UserOrderDetails';
 import Payment from './Components/Payment';
 import OrderSuccess from './Components/OrderSuccess';
 import OrderFailed from './Components/OrderFailed';
+import OutOfStock from './Components/OutOfStock';
 
 // Admin Layout Component
 const AdminLayout = ({ children }) => (
@@ -48,6 +49,7 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/order-failed" element={<OrderFailed />} />
+        <Route path="/out-of-stock" element={<OutOfStock />} />
 
         {/* Admin Routes */}
         <Route
