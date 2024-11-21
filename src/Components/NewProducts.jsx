@@ -206,7 +206,9 @@ const NewProducts = () => {
               </form>
             </div>
             <div className="modal-footer">
-              <button type="button" onClick={handleFormData} className="btn btn-dark">
+              <button type="button" onClick={handleFormData} className="btn btn-dark"
+                data-bs-dismiss="modal"
+                aria-label="Close">
                 Place your order
               </button>
             </div>
