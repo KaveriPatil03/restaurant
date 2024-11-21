@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* NAVBAR */
+.navbar-nav li a{
+  font-size: 17px;
+}
+.navbar-brand{
+  letter-spacing: 3px;
+}
+
+/* Card */
+.card .item-product{
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.card .item-product img{
+  transition: all .5s ease-out 0s;
+  /* border-bottom: 1px solid black; */
+}
+/* {
+  transition: all 0.5s ease;
+} */
+.card .item-product img:hover{
+  transform: scale(1.1);
+  opacity: 0.6;
+}
+.card-body{
+  background-color: #f8f9fa;
+}
+/* :hover{
+  transform: scale(1.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+} */
+
+/* Product */
+.product img{
+  transition: all 0.5s ease;
+}
+.product img:hover{
+  transform: scale(1.1);
+}
+
+/* TOP SLIDER IMAGE START*/
+.header-section {
+  width: 100%;
+  height: 70vh;
+  background-image: linear-gradient(rgba(51, 51, 51, 0.247), rgba(43, 43, 43, 0.308)), url(../src/img/slider1.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  clip-path: polygon(100% 0%, 100% 80%, 50% 100%, 0 80%, 0 0);
+  position: relative;
+}
+
+.txt a {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.center {
+  text-align: center;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.center p {
+  font-size: 1.3rem;
+  padding: 10px 0 20px 0;
+  color: #fff !important;
+}
+
+.center h1 {
+  color: #fff;
+}
+.breadcrumb-item.active {
+  color: #efefef !important;
+}
+.breadcrumb-item a{
+  color: #f8f9fa;
+  text-decoration: none;
+}
+.breadcrumb-item+.breadcrumb-item::before {
+  float: left;
+  padding-right: 0.5rem;
+  color: #dededf;
+  content: var(--bs-breadcrumb-divider, "/");
+}
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: rgb(149 149 149 / 75%)!important;
+}
+@media only screen and (max-width: 500px){
+  .products-card{
+    padding-left: 40px;
+  }
+  .contact-img img{
+    max-width: 100%;
+    height: 180px;
+  }
+  .about-us{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .about-img img{
+    max-width: 100%;
+    height: 300px;
+  }
+  .about-us .pt-5{
+    padding-top: 0rem !important;
+  }
+  .about-us .mt-5{
+    margin-top: 0rem !important;
+  }
+}
