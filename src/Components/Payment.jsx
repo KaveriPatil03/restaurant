@@ -21,26 +21,24 @@ const Payment = () => {
     // Payload
     const payload = {
       productId: product.id,
-      productTitle: product.title,
-      price: product.price,
       user: formData,
       upiId: upiId,
     };
 
     // Simulate a POST request with axios
     try {
-      const response = await axios.post('https://dummyapi.com/payment', payload, {
+      const response = await axios.post('/http://localhost:80/orders/', payload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      if (response.data.message === "Payment processed successfully") {
+      if (response.data.message === "Order Success") {
         console.log('Payment processed successfully:', response.data);
         navigate('/order-success');
-      } else {
+      } else if (response.data.message === "Order not successful") {
         console.error('Payment failed:', response.status);
-        // Handle payment failure (show error to the user)
+        navigate('/despatch-failed');
       }
     } catch (error) {
       console.error('Error making payment:', error);
@@ -62,14 +60,15 @@ const Payment = () => {
 
     try {
       // Make a POST request when canceling with empty UPI ID
-      const response = await axios.post('https://dummyapi.com/payment', cancelPayload, {
+      const response = await axios.post('/http://localhost:80/orders/', cancelPayload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      if (response.data.message === "Payment canceled successfully") {
+      if (response.data.message === "Order not successful") {
         console.log('Payment canceled successfully:', response.data);
+        navigate('/order-failed');
       } else {
         console.error('Payment cancel failed:', response.status);
       }
@@ -77,7 +76,7 @@ const Payment = () => {
       console.error('Error making cancel payment request:', error);
     }
 
-    navigate('/order-failed'); 
+    navigate('/order-failed');
   };
 
   return (

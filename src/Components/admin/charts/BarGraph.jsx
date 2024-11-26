@@ -19,7 +19,7 @@ const BarGraph = ({ data = [] }) => {
     datasets: [
       {
         label: "Customer Spending",
-        data: hasData ? data.map((item) => item.total_spending) : [0],
+        data: hasData ? data.map((item) => item.totalSpending) : [0],
         fill: false,
         backgroundColor: "rgba(200,200,200,0.2)", // Fallback background color
         borderColor: "rgba(200,200,200,1)", // Fallback border color

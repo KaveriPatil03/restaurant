@@ -1,32 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import Data from '../Data';
-import { useSnackbar } from 'react-simple-snackbar';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Data from "../Data";
+import { useSnackbar } from "react-simple-snackbar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const options = {
-  position: 'bottom-right',
+  position: "bottom-right",
   style: {
-    backgroundColor: 'green',
-    border: '1px solid green',
-    borderRadius: '2px',
-    color: 'white',
-    fontSize: '20px',
-    textAlign: 'center',
+    backgroundColor: "green",
+    border: "1px solid green",
+    borderRadius: "2px",
+    color: "white",
+    fontSize: "20px",
+    textAlign: "center",
   },
   closeStyle: {
-    color: 'lightcoral',
-    fontSize: '16px',
+    color: "lightcoral",
+    fontSize: "16px",
   },
 };
 
 const formData = {
-  name: '',
-  email: '',
-  num: '',
-  price: '',
-  city: '',
-  upiId: ''
+  customerName: "",
+  address: "",
+  city: "",
+  email: "",
+  phone: "",
+  UPI: "",
+  productId: "",
 };
 
 const NewProducts = () => {
@@ -40,34 +41,49 @@ const NewProducts = () => {
     e.preventDefault();
 
     // Check if any required fields are empty
-    if (!orderFormData.name || !orderFormData.email || !orderFormData.num || !orderFormData.city) {
+    if (
+      !orderFormData.customerName ||
+      !orderFormData.email ||
+      !orderFormData.phone ||
+      !orderFormData.address ||
+      !orderFormData.city
+    ) {
       alert("Please fill in all the fields.");
       return;
     }
 
     try {
-      // Simulate a GET request to check the stock for the selected item
-      const stockResponse = await axios.get(`/api/check-stock/${selectedItem.id}`);
+      const response = await axios.post(
+        "/http://localhost:80/orders/",
+        formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      );
 
-      // Check if the stock is available
-      if (stockResponse.data.inStock) {
-        // Simulate a POST request to a dummy API endpoint for the order
-        const response = await axios.post('/api/dummy-order', orderFormData);
-
-        // Reset the form data after submission
-        setOrderFormData(formData);
-
-        // Navigate to the payment page
-        navigate('/payment', { state: { product: selectedItem, formData: orderFormData } });
-      } else {
-        // If stock is not available, navigate to the "Out of Stock" page
-        navigate('/out-of-stock');
+      // Handle the response message
+      if (response.data === "Move to Payment") {
+        navigate("/payment", {
+          state: { product: selectedItem, formData: orderFormData },
+        });
+      } else if (response.data === "Out of Stock") {
+        navigate("/out-of-stock");
       }
     } catch (error) {
-      // Handle error
       console.error("Error submitting order:", error);
-      openSnackbar('Failed to place the order. Please try again.');
+      openSnackbar("Failed to place the order. Please try again.");
     }
+
+    setOrderFormData({
+      customerName: "",
+      address: "",
+      city: "",
+      email: "",
+      phone: "",
+      UPI: "",
+      productId: ""
+    })
   };
 
   const handleOrderClick = (item) => {
@@ -78,7 +94,6 @@ const NewProducts = () => {
     return (
       <div className="col-lg-4 col-md-6 col-sm-12 products-card" key={item.id}>
         <div className="card my-3" style={{ width: "22rem" }}>
-
           <div className="card-body">
             <h5 className="card-title">{item.title}</h5>
             <p className="lead">${item.price}</p>
@@ -113,9 +128,7 @@ const NewProducts = () => {
 
       {/* Product Cards */}
       <div className="container">
-        <div className="row">
-          {Data.map(cardItem)}
-        </div>
+        <div className="row">{Data.map(cardItem)}</div>
       </div>
 
       {/* Modal */}
@@ -142,47 +155,93 @@ const NewProducts = () => {
             <div className="modal-body">
               <form>
                 <div class="mb-3">
-                  <label for="exampleInputName" class="form-label">Name</label>
+                  <label for="exampleInputName" class="form-label">
+                    Name
+                  </label>
                   <input
                     type="text"
                     class="form-control"
                     id="exampleInputName"
-                    name="name"
-                    value={orderFormData.name}  
-                    onChange={(e) => setOrderFormData({ ...orderFormData, name: e.target.value })}
+                    name="customerName"
+                    value={orderFormData.customerName}
+                    onChange={(e) =>
+                      setOrderFormData({
+                        ...orderFormData,
+                        customerName: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputEmail" class="form-label">Email address</label>
+                  <label for="exampleInputEmail" class="form-label">
+                    Email address
+                  </label>
                   <input
                     type="email"
                     class="form-control"
                     id="exampleInputEmail"
                     name="email"
-                    value={orderFormData.email}  
-                    onChange={(e) => setOrderFormData({ ...orderFormData, email: e.target.value })}
+                    value={orderFormData.email}
+                    onChange={(e) =>
+                      setOrderFormData({
+                        ...orderFormData,
+                        email: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputNum" class="form-label">Mobile No.</label>
+                  <label for="exampleInputNum" class="form-label">
+                    Mobile No.
+                  </label>
                   <input
                     type="text"
                     class="form-control"
                     id="exampleInputNum"
-                    name="num"
-                    value={orderFormData.num}  
-                    onChange={(e) => setOrderFormData({ ...orderFormData, num: e.target.value })}
+                    name="phone"
+                    value={orderFormData.phone}
+                    onChange={(e) =>
+                      setOrderFormData({
+                        ...orderFormData,
+                        phone: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputCity" class="form-label">City</label>
+                  <label for="exampleInputCity" class="form-label">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputCity"
+                    name="address"
+                    value={orderFormData.address}
+                    onChange={(e) =>
+                      setOrderFormData({
+                        ...orderFormData,
+                        address: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputCity" class="form-label">
+                    City
+                  </label>
                   <input
                     type="text"
                     class="form-control"
                     id="exampleInputCity"
                     name="city"
-                    value={orderFormData.city}  
-                    onChange={(e) => setOrderFormData({ ...orderFormData, city: e.target.value })}
+                    value={orderFormData.city}
+                    onChange={(e) =>
+                      setOrderFormData({
+                        ...orderFormData,
+                        city: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
@@ -190,12 +249,22 @@ const NewProducts = () => {
                 {selectedItem ? (
                   <>
                     <div class="mb-3">
-                      <label for="examplePrice" class="form-label">Price</label>
+                      <label for="examplePrice" class="form-label">
+                        Price
+                      </label>
                       <input
                         type="text"
-                        value={selectedItem.price}
+                        value={selectedItem?.price}
                         class="form-control readOnly disabled"
                         id="exampleInputPrice"
+                        readOnly
+                      />
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputCity"
+                        name="productId"
+                        value={selectedItem?.id}
                         readOnly
                       />
                     </div>
@@ -206,9 +275,13 @@ const NewProducts = () => {
               </form>
             </div>
             <div className="modal-footer">
-              <button type="button" onClick={handleFormData} className="btn btn-dark"
+              <button
+                type="button"
+                onClick={handleFormData}
+                className="btn btn-dark"
                 data-bs-dismiss="modal"
-                aria-label="Close">
+                aria-label="Close"
+              >
                 Place your order
               </button>
             </div>

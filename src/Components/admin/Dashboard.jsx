@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from "react";
 import PieChart from "./charts/PieChart";
 import BarGraph from "./charts/BarGraph";
+import axios from "axios";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     totalOrders: 0,
     totalProducts: 0,
     totalUsers: 0,
-    salesData: [],
-    spendingData: [],
+    productSales: [],
+    customerSpendings: [],
   });
 
   useEffect(() => {
-    // Fetch dashboard data from the backend
-    fetch("/api/dashboard-data")
-      .then((response) => response.json())
-      .then((data) => setDashboardData(data))
-      .catch((error) => console.error("Error fetching dashboard data:", error));
+    // Fetch analytics data using axios
+   const getAnalyticsData = async() => {
+    try{
+      const response = axios.get("/analytics");
+      const data = response.data || {};
+      setDashboardData({
+        productSales: data.productSales || [],
+        customerSpendings: data.customerSpendings || [],
+      });
+    }catch(err){
+      console.log(err);
+    }
+    getAnalyticsData();
+   }
   }, []);
 
   return (
@@ -51,10 +61,10 @@ const Dashboard = () => {
 
         <div className="row">
           <div className="col-sm-12 col-md-6 col-lg-6">
-            <PieChart data={dashboardData.salesData} />
+          <PieChart data={dashboardData.productSales} />
           </div>
           <div className="col-sm-12 col-md-6 col-lg-6">
-            <BarGraph data={dashboardData.spendingData} />
+          <BarGraph data={dashboardData.customerSpendings} />
           </div>
         </div>
       </div>
