@@ -9,7 +9,7 @@ const UserOrderDetails = () => {
         <hr />
       </div>
     <div className='container pb-4'>
-    <table class="table">
+    <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>

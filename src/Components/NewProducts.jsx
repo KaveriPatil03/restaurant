@@ -37,6 +37,19 @@ const NewProducts = () => {
   const [openSnackbar] = useSnackbar(options);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await axios.get('http://8082/products');
+        console.log(response)
+        setProducts(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getProducts();
+  }, [])
+
   const handleFormData = async (e) => {
     e.preventDefault();
 
@@ -51,11 +64,11 @@ const NewProducts = () => {
       alert("Please fill in all the fields.");
       return;
     }
-
+    console.log('orderFormData', orderFormData);
     try {
       const response = await axios.post(
-        "/http://localhost:80/orders/",
-        formData, {
+        "http://localhost:8080/orders",
+        orderFormData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -88,6 +101,10 @@ const NewProducts = () => {
 
   const handleOrderClick = (item) => {
     setSelectedItem(item);
+    setOrderFormData((prev) => ({
+      ...prev,
+      productId: item.id,
+    }));
   };
 
   const cardItem = (item) => {
@@ -128,7 +145,7 @@ const NewProducts = () => {
 
       {/* Product Cards */}
       <div className="container">
-        <div className="row">{Data.map(cardItem)}</div>
+        <div className="row">{products.map(cardItem)}</div>
       </div>
 
       {/* Modal */}
@@ -154,13 +171,21 @@ const NewProducts = () => {
             </div>
             <div className="modal-body">
               <form>
-                <div class="mb-3">
-                  <label for="exampleInputName" class="form-label">
+                <div className="mb-3">
+                  <input
+                    type="hidden"
+                    className="form-control"
+                    id="exampleInputCity"
+                    name="productId"
+                    value={selectedItem?.id}
+                    readOnly
+                  />
+                  <label htmlFor="exampleInputName" className="form-label">
                     Name
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputName"
                     name="customerName"
                     value={orderFormData.customerName}
@@ -172,13 +197,13 @@ const NewProducts = () => {
                     }
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail" class="form-label">
+                <div className="mb-3">
+                  <label htmlFor="exampleInputEmail" className="form-label">
                     Email address
                   </label>
                   <input
                     type="email"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputEmail"
                     name="email"
                     value={orderFormData.email}
@@ -190,13 +215,13 @@ const NewProducts = () => {
                     }
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputNum" class="form-label">
+                <div className="mb-3">
+                  <label htmlFor="exampleInputNum" className="form-label">
                     Mobile No.
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputNum"
                     name="phone"
                     value={orderFormData.phone}
@@ -208,13 +233,13 @@ const NewProducts = () => {
                     }
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputCity" class="form-label">
+                <div className="mb-3">
+                  <label htmlFor="exampleInputCity" className="form-label">
                     Address
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputCity"
                     name="address"
                     value={orderFormData.address}
@@ -226,13 +251,13 @@ const NewProducts = () => {
                     }
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputCity" class="form-label">
+                <div className="mb-3">
+                  <label htmlFor="exampleInputCity" className="form-label">
                     City
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputCity"
                     name="city"
                     value={orderFormData.city}
@@ -248,25 +273,18 @@ const NewProducts = () => {
                 {/* Price Information */}
                 {selectedItem ? (
                   <>
-                    <div class="mb-3">
-                      <label for="examplePrice" class="form-label">
+                    <div className="mb-3">
+                      <label htmlFor="examplePrice" className="form-label">
                         Price
                       </label>
                       <input
                         type="text"
                         value={selectedItem?.price}
-                        class="form-control readOnly disabled"
+                        className="form-control readOnly disabled"
                         id="exampleInputPrice"
                         readOnly
                       />
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputCity"
-                        name="productId"
-                        value={selectedItem?.id}
-                        readOnly
-                      />
+
                     </div>
                   </>
                 ) : (

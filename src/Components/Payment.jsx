@@ -27,7 +27,7 @@ const Payment = () => {
 
     // Simulate a POST request with axios
     try {
-      const response = await axios.post('/http://localhost:80/orders/', payload, {
+      const response = await axios.post('http://localhost:8080/orders/', payload, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,7 +60,7 @@ const Payment = () => {
 
     try {
       // Make a POST request when canceling with empty UPI ID
-      const response = await axios.post('/http://localhost:80/orders/', cancelPayload, {
+      const response = await axios.post('http://localhost:80/orders', cancelPayload, {
         headers: {
           'Content-Type': 'application/json',
         },
