@@ -15,11 +15,13 @@ const BarGraph = ({ data = [] }) => {
   const hasData = data.length > 0;
 
   const chartData = {
-    labels: hasData ? data.map((item) => item.name) : ["No Data"],
+    // labels: hasData ? data.map((item) => item.name) : ["No Data"],
+    labels: hasData ? data.map((item) => item.customerName) : ["No Data"],
     datasets: [
       {
         label: "Customer Spending",
-        data: hasData ? data.map((item) => item.totalSpending) : [0],
+        // data: hasData ? data.map((item) => item.totalSpending) : [0],
+        data: hasData ? data.map((item) => item.purchaseAmount) : [0],
         fill: false,
         backgroundColor: "rgba(200,200,200,0.2)", // Fallback background color
         borderColor: "rgba(200,200,200,1)", // Fallback border color
@@ -59,3 +61,5 @@ const BarGraph = ({ data = [] }) => {
 };
 
 export default BarGraph;
+
+
